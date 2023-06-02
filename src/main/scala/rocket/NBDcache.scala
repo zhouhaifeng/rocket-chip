@@ -92,6 +92,7 @@ class IOMSHR(id: Int)(implicit edge: TLEdgeOut, p: Parameters) extends L1HellaCa
       M_XA_MAX  -> edge.Arithmetic(a_source, a_address, a_size, a_data, TLAtomics.MAX)._2,
       M_XA_MINU -> edge.Arithmetic(a_source, a_address, a_size, a_data, TLAtomics.MINU)._2,
       M_XA_MAXU -> edge.Arithmetic(a_source, a_address, a_size, a_data, TLAtomics.MAXU)._2))
+      M_XA_CMPEXCHGU -> edge.Arithmetic(a_source, a_address, a_size, a_data, TLAtomics.CMPEXCHGU)._2))
   } else {
     // If no managers support atomics, assert fail if processor asks for them
     assert(state === s_idle || !isAMO(req.cmd))
