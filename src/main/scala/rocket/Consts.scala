@@ -77,7 +77,9 @@ trait MemoryOpConstants {
   def M_HFENCEG = "b10110".U // HFENCE.GVMA
   def M_WOK     = "b10111".U // check write permissions but don't perform a write
   def M_HLVX    = "b10000".U // HLVX instruction
+  def M_XA_CMPEXCHG    = "b11000".U // CMPEXCHG instruction
 
+  //todo: CMPEXCHG is amo logical?
   def isAMOLogical(cmd: UInt) = cmd.isOneOf(M_XA_SWAP, M_XA_XOR, M_XA_OR, M_XA_AND)
   def isAMOArithmetic(cmd: UInt) = cmd.isOneOf(M_XA_ADD, M_XA_MIN, M_XA_MAX, M_XA_MINU, M_XA_MAXU)
   def isAMO(cmd: UInt) = isAMOLogical(cmd) || isAMOArithmetic(cmd)
