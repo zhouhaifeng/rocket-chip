@@ -571,6 +571,7 @@ class DCacheModule(outer: DCache) extends HellaCacheModule(outer) {
       M_XA_MAX  -> edge.Arithmetic(a_source, access_address, a_size, a_data, TLAtomics.MAX)._2,
       M_XA_MINU -> edge.Arithmetic(a_source, access_address, a_size, a_data, TLAtomics.MINU)._2,
       M_XA_MAXU -> edge.Arithmetic(a_source, access_address, a_size, a_data, TLAtomics.MAXU)._2))
+      M_XA_CMPEXCHGU -> edge.Arithmetic(a_source, access_address, a_size, a_data, TLAtomics.CMPEXCHGU)._2))
   } else {
     // If no managers support atomics, assert fail if processor asks for them
     assert (!(tl_out_a.valid && s2_read && s2_write && s2_uncached))
