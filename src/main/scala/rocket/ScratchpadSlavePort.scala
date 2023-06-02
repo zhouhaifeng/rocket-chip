@@ -71,6 +71,9 @@ class ScratchpadSlavePort(address: Seq[AddressSet], coreDataBytes: Int, usingAto
           TLAtomics.OR            -> M_XA_OR,
           TLAtomics.AND           -> M_XA_AND,
           TLAtomics.SWAP          -> M_XA_SWAP)),
+          //added by zhf for cmpexchg
+          TLAtomics.CMPEXCHG          -> M_XA_CMPEXCHG)),
+          //added by zhf for cmpexchg
         TLMessages.Get            -> M_XRD))
 
       // Convert full PutPartial into PutFull to work around RMWs causing X-prop problems.
