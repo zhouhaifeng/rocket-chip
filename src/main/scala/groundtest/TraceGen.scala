@@ -287,11 +287,12 @@ class TraceGenerator(val params: TraceGenParams)(implicit val p: Parameters) ext
 
   // Generate random opcodes for memory operations according to the
   // given frequency distribution.
-
+  
   // Opcodes
+  /* modified by zhf for cmpexchg begin*/
   val (opNop   :: opLoad :: opStore ::
        opFence :: opLRSC :: opSwap  ::
-       opDelay :: Nil) = Enum(7)
+       opDelay :: opCmpExchg Nil) = Enum(8)
 
   // Distribution specified as a list of (frequency,value) pairs.
   // NOTE: frequencies must sum to a power of two.
@@ -302,7 +303,8 @@ class TraceGenerator(val params: TraceGenParams)(implicit val p: Parameters) ext
     (4,  opFence),
     (3,  opLRSC),
     (3,  opSwap),
-    (2,  opDelay)))
+    (2,  opDelay), 
+    (1,  opEmpExchg)))
 
   // Request/response tags
   // ---------------------
@@ -444,6 +446,10 @@ class TraceGenerator(val params: TraceGenParams)(implicit val p: Parameters) ext
         } .elsewhen (currentOp === opSwap) {
           reqCmd := M_XA_SWAP
         }
+          .elsewhen (currentOp === opCmpExchg) {
+          reqCmd := M_XA_CMPEXCHG
+        }}
+
         // Send request
         sendFreshReq := true.B
         // Move on to a new operation
@@ -567,6 +573,9 @@ class TraceGenerator(val params: TraceGenParams)(implicit val p: Parameters) ext
     when (reqCmd === M_XA_SWAP) {
       printf(" swap-req %d 0x%x", reqData, addr)
     }
+    when (reqCmd === M_XA_CMPEXCHG) {
+      printf(" cmpexchg-req %d 0x%x", reqData, addr)
+    }
     // Print tag
     printf(" #%d", reqTag)
     // Print time
@@ -587,6 +596,7 @@ class TraceGenerator(val params: TraceGenParams)(implicit val p: Parameters) ext
     // Increment response count
     respCount := respCount + 1.U
   }
+ /* modified by zhf for cmpexchg end*/
 
   // Termination condition
   // ---------------------
